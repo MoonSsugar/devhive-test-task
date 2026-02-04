@@ -1,18 +1,28 @@
 import { useMemo, useState } from "react"
 import type { User, UserChanges } from "@/types/user"
 
+/**
+ * Custom Hook containing all business logic for the UserList.
+ * Implements "Separation of Concerns" patter: UI components are presentational,
+ * while state managment and filtering logic live here.
+ */
 export function useUsers(initialUsers: User[]) {
   const [users, setUsers] = useState(initialUsers);
   const [cityFilter, setCityFilter] = useState('');
   const [searchFilter, setSearchFilter] = useState('');
-
+  
+// Extracting unique cities for the dropdown.
+  // Using Set ensures O(1) uniquess handling.
   const uniqueCities = useMemo(() => {
-    return users.map((user) => { return user.address.city }).sort();
-  }, [users]);
+    const allCities = users.map(u => u.address.city).filter(Boolean);
 
-  const filtredUsers = useMemo(() => {
+    return Array.from(new Set(allCities)).sort();
+  }, [users]);
+// Optimized filtering: recalculates only whet users or filters change.
+  // Prevents heavy operations on every render.
+  const filteredUsers = useMemo(() => {
     return users.filter((user) =>
-      (user.address.city as string).includes(cityFilter) && (user.name as string).toLowerCase().includes(searchFilter.toLowerCase())
+      user.address.city.includes(cityFilter) && user.name.toLowerCase().includes(searchFilter.toLowerCase())
     );
   }, [searchFilter, cityFilter, users]);
 
@@ -26,6 +36,7 @@ export function useUsers(initialUsers: User[]) {
           name: changes.name,
           email: changes.email,
           address: {
+            ...user.address,
             city: changes.city
           }
         }
@@ -38,8 +49,9 @@ export function useUsers(initialUsers: User[]) {
   };
 
   return {
-    users: filtredUsers,
+    users: filteredUsers,
     uniqueCities: uniqueCities,
+    cityFilter: cityFilter,
     setCityFilter: setCityFilter,
     setSearchFilter: setSearchFilter,
     updateUser: updateUser

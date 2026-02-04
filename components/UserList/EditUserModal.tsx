@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { editUserSchema } from "@/utils/editUserSchema";
+import { useEffect } from "react";
 import type { EditUser } from "@/utils/editUserSchema";
 import type { User, UserChanges } from "@/types/user";
 
@@ -10,6 +11,14 @@ interface EditingUserModalProps {
   updateUser: (user: User, changes: UserChanges) => void;
 }
 
+/**
+ * Edit User Form
+ * 
+ * React Hook Form + Zod
+ * Reason: 
+ * RHF use uncontrolled inputs, minimizing re-renders while typing for performance
+ * Zod provides strict schema validation for type safety 
+ */
 export default function EditUserModal({
   editingUser,
   setEditingUser,
@@ -18,6 +27,7 @@ export default function EditUserModal({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<EditUser>({
     resolver: zodResolver(editUserSchema),
@@ -26,6 +36,11 @@ export default function EditUserModal({
       city: editingUser.address.city
     }
   });
+
+  // Resets form values when the modal opens with a different user
+  useEffect(() => {
+    reset(editingUser);
+  }, [editingUser, reset]);
 
   const onSubmit = (changes: EditUser) => {
     updateUser(editingUser, changes);
@@ -38,7 +53,7 @@ export default function EditUserModal({
 
   return (
     <div
-      className={`fixed w-full h-full inset-0 flex justify-center items-center z-10 bg-black/20`}
+      className={`fixed w-full h-full inset-0 flex justify-center items-center z-10 bg-black/20 backdrop-blur-sm`}
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -89,7 +104,7 @@ export default function EditUserModal({
             {...register("city")}
             type="text"
             name="city"
-            placeholder="Kiev"
+            placeholder="Kyiv"
             className="text-xl outline-0 border border-gray-400 rounded-full px-2 py-1"
           />
           {errors.city && (

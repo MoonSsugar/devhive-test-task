@@ -1,14 +1,14 @@
 export interface User {
   id: number,
-  name?: string,
+  name: string,
   email: string,
   address: {
-    city?: string
+    city: string
   }
 }
 
 export interface UserChanges {
-  name?: string,
+  name: string,
   email: string,
-  city?: string
+  city: string
 }

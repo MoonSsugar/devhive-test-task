@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# User Management Dashboard (Next.js 15 + React Flow)
 
-## Getting Started
+A high-performance user management interface built with **Next.js 15 (App Router)**, **TypeScript**, and **Tailwind CSS**.
 
-First, run the development server:
+This project demonstrates modern frontend architecture, clean separation of concerns, and performance-focused UI patterns.
+---
+
+## 🚀 How to Run
+
+### 1. Install dependencies
 
 ```bash
+npm install
+# or
+pnpm install
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+Open:
+
+```bash
+http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🏗️ Architecture Decisions
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Server Components & Data Fetching
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- The initial data fetch happens in `app/page.tsx` (Server Component).
+- Improves **First Contentful Paint (FCP)** and SEO.
+- Data is passed down as props to avoid client-side fetch waterfalls.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Custom Hook (`useUsers`)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- All business logic (filtering, searching, updating state) is extracted into a custom hook.
+- UI components remain presentational, while the hook handles complexity.
+- Improves maintainability and testability.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+### 3. Performance Optimizations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **useMemo:** Prevents expensive recalculations during filtering.
+- **React Hook Form:** Minimizes re-renders compared to controlled inputs.
+- **Debounce:** Reduces filtering frequency for search input.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+### 4. Forms & Validation
+
+- **Zod:** Strict schema validation (email format, required fields).
+- **React Hook Form:** High-performance form handling with uncontrolled inputs.
+
+---
+
+## 🛠 Tech Stack
+
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **State Management:** React Hooks (`useState`, `useMemo`)
+- **Forms:** React Hook Form + Zod
+
+---
+
+## 🔮 Future Improvements
+
+- **Virtualization:** Use `react-window` for large datasets (1000+ items).
+- **API Integration:** Replace local state with real `PUT/PATCH` backend requests.
+- **Accessibility:** Improve ARIA labels and keyboard navigation.
+
+---
+
+## 📌 Notes
+
+This project is built as a portfolio-ready example of:
+
+- Modern React architecture  
+- Clean code practices  
+- Performance optimization  
+- Scalable UI patterns  

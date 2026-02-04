@@ -17,7 +17,7 @@ export default function UserCard({ user, setEditingUser }: UserCardProps) {
       </p>
       <p>
         City: <br />
-        {user.address.city ? user.address.city : "Unknown city"}
+        {user.address.city}
       </p>
       <button
         className="bg-yellow-200 w-full p-1 rounded-xl"

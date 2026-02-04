@@ -16,7 +16,7 @@ interface UserListProps {
  * 
  * Responsible for:
  * 1. Initializing the custom hook 
- * 2. Managing locacl UI state
+ * 2. Managing local UI state
  * 3. Composing dumb components
  * 
  * Pattern: Lifting state up & Composition 

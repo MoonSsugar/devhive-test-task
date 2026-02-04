@@ -3,8 +3,8 @@ import type { User, UserChanges } from "@/types/user"
 
 /**
  * Custom Hook containing all business logic for the UserList.
- * Implements "Separation of Concerns" patter: UI components are presentational,
- * while state managment and filtering logic live here.
+ * Implements "Separation of Concerns" pattern: UI components are presentational,
+ * while state management and filtering logic live here.
  */
 export function useUsers(initialUsers: User[]) {
   const [users, setUsers] = useState(initialUsers);
@@ -12,13 +12,13 @@ export function useUsers(initialUsers: User[]) {
   const [searchFilter, setSearchFilter] = useState('');
   
 // Extracting unique cities for the dropdown.
-  // Using Set ensures O(1) uniquess handling.
+  // Using Set ensures O(1) uniqueness handling.
   const uniqueCities = useMemo(() => {
     const allCities = users.map(u => u.address.city).filter(Boolean);
 
     return Array.from(new Set(allCities)).sort();
   }, [users]);
-// Optimized filtering: recalculates only whet users or filters change.
+// Optimized filtering: recalculates only when users or filters change.
   // Prevents heavy operations on every render.
   const filteredUsers = useMemo(() => {
     return users.filter((user) =>
@@ -27,10 +27,8 @@ export function useUsers(initialUsers: User[]) {
   }, [searchFilter, cityFilter, users]);
 
   const updateUser = (editingUser: User, changes: UserChanges) => {
-    const currentUser = users.find((user) => user.id === editingUser.id);
-
     const updatedUsers = users.map((user) => {
-      if (user.id === (currentUser as User).id) {
+      if (user.id === editingUser.id) {
         return {
           ...user,
           name: changes.name,

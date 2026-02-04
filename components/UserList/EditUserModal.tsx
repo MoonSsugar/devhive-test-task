@@ -39,7 +39,10 @@ export default function EditUserModal({
 
   // Resets form values when the modal opens with a different user
   useEffect(() => {
-    reset(editingUser);
+    reset({
+      ...editingUser,
+      city: editingUser.address.city
+    });
   }, [editingUser, reset]);
 
   const onSubmit = (changes: EditUser) => {
@@ -89,7 +92,7 @@ export default function EditUserModal({
             {...register("email")}
             type="email"
             name="email"
-            placeholder="exmaple@email.com"
+            placeholder="example@email.com"
             className="text-xl outline-0 border border-gray-400 rounded-full px-2 py-1"
           />
           {errors.email && (
